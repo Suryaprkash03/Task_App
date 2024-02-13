@@ -1,70 +1,77 @@
-import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, useWindowDimensions } from 'react-native';
-import { WToast } from 'react-native-smart-tip';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Modal from 'react-native-modal';
+import Toast from 'react-native-toast-message';
 
-const ChatScreen = () => {
-  const [messages, setMessages] = useState([]);
+const ChatBubble = ({ message, isSent }) => {
+  return (
+    <View style={[styles.bubbleContainer, isSent ? styles.sentBubble : styles.receivedBubble]}>
+      <Text style={styles.messageText}>{message}</Text>
+    </View>
+  );
+};
+
+const App = () => {
   const [inputText, setInputText] = useState('');
-  const windowDimensions = useWindowDimensions();
-
-  useEffect(() => {
-    const handleOrientationChange = () => {
-      showToast('Orientation changed');
-    };
-
-    const dimensionsSubscription = Dimensions.addEventListener('change', handleOrientationChange);
-
-    return () => {
-      dimensionsSubscription.remove();
-    };
-  }, []);
+  const [messages, setMessages] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const sendMessage = () => {
     if (inputText.trim() !== '') {
-      setMessages([...messages, { text: inputText, sender: 'user' }]);
+      setMessages([...messages, { id: messages.length, message: inputText, isSent: true }]);
       setInputText('');
       showToast('Message sent');
-    } else {
-      showToast('Please type a message');
     }
   };
 
   const showToast = (message) => {
-    const toastOpts = {
-      data: message,
-      textColor: '#ffffff',
-      backgroundColor: '#444444',
-      duration: WToast.duration.LONG,
-      position: WToast.position.TOP,
-    };
-    
-    WToast.show(toastOpts);
+    Toast.show({
+      text1: message,
+      type: 'success',
+    });
   };
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  // const showSnackbar = (message) => {
+  //   Snackbar.show({
+  //     text: message,
+  //     duration: Snackbar.LENGTH_SHORT,
+  //   });
+  // };
 
   return (
     <View style={styles.container}>
       <FlatList
         data={messages}
-        renderItem={({ item }) => (
-          <View style={[styles.messageContainer, { alignSelf: item.sender === 'user' ? 'flex-end' : 'flex-start' }]}>
-            <Text style={[styles.messageText, { backgroundColor: item.sender === 'user' ? '#DCF8C6' : '#FFFFFF' }]}>
-              {item.text}
-            </Text>
-          </View>
-        )}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <ChatBubble message={item.message} isSent={item.isSent} />}
+        inverted
       />
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.textInput}
+          style={styles.input}
           value={inputText}
           onChangeText={setInputText}
-          placeholder="Type your message..."
+          placeholder="Type a message..."
         />
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity style={styles.modalButton} onPress={toggleModal}>
+        <Text style={styles.modalButtonText}>Show Modal</Text>
+      </TouchableOpacity>
+      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalText}>This is a modal</Text>
+          <TouchableOpacity style={styles.modalCloseButton} onPress={toggleModal}>
+            <Text style={styles.modalCloseButtonText}>Close Modal</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -72,43 +79,83 @@ const ChatScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'flex-end',
   },
-  messageContainer: {
+  bubbleContainer: {
+    maxWidth: '70%',
+    borderRadius: 8,
     marginVertical: 5,
-    marginHorizontal: 10,
-    maxWidth: '80%',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+  },
+  sentBubble: {
+    backgroundColor: '#DCF8C6',
+    alignSelf: 'flex-end',
+  },
+  receivedBubble: {
+    backgroundColor: '#FFFFFF',
+    alignSelf: 'flex-start',
   },
   messageText: {
-    padding: 10,
-    borderRadius: 10,
     fontSize: 16,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
+    backgroundColor: '#ffffff',
     padding: 10,
   },
-  textInput: {
+  input: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: '#CCCCCC',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    backgroundColor: '#f0f0f0',
     marginRight: 10,
   },
   sendButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: 'blue',
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   sendButtonText: {
     color: 'white',
-    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  modalButton: {
+    backgroundColor: 'blue',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  modalCloseButton: {
+    backgroundColor: 'blue',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignSelf: 'flex-end',
+  },
+  modalCloseButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 
-export default ChatScreen;
+export default App;
