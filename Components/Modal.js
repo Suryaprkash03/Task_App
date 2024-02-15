@@ -1,31 +1,30 @@
-import React from 'react';
-import { Button, Modal, StyleSheet, Text, View } from 'react-native';
+// Modal.js
+import React, { useState } from 'react';
+import { Button, Modal, Text, View } from 'react-native';
 
-const CustomModal = ({ visible, onClose }) => {
-    return (
-        <Modal animationType="slide" transparent={true} visible={visible}>
-            <View style={styles.container}>
-                <View style={styles.modal}>
-                    <Text>This is a modal</Text>
-                    <Button title="Close" onPress={onClose} />
-                </View>
-            </View>
-        </Modal>
-    );
+const ModalComponent = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  return (
+    <View>
+      <Button title="Show Modal" onPress={toggleModal} />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={toggleModal}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>This is a modal</Text>
+          <Button title="Close Modal" onPress={toggleModal} />
+        </View>
+      </Modal>
+    </View>
+  );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modal: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 10,
-    },
-});
-
-export default CustomModal;
+export default ModalComponent;
