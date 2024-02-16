@@ -8,17 +8,17 @@ import profilePicture from './assets/image/profile.png';
 
 
 const ChatScreen = () => {
-  const [messages, setMessages] = useState([
+  const [messages] = useState([
     { id: 12, text: 'Hi' },
     { id: 34, text: 'Hello' }]);
   const [newMessage, setNewMessage] = useState('');
 
-  const handleSend = () => {
-    if (newMessage.trim() === '') return;
-    const updatedMessages = [...messages, { id: messages.length, text: newMessage }];
-    setMessages(updatedMessages,);
-    setNewMessage('');
-  };
+  // const handleSend = () => {
+  //   if (newMessage.trim() === '') return;
+  //   const updatedMessages = [...messages, { id: messages.length, text: newMessage }];
+  //   setMessages(updatedMessages,);
+  //   setNewMessage('');
+  // };
   return (<>
 
     <View style={styles.container}>
@@ -57,7 +57,7 @@ const ChatScreen = () => {
         <TouchableOpacity>
           <Ionicons name='' />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+        <TouchableOpacity style={styles.sendButton} onPress={handle}>
           <Ionicons name="send" size={24} color="white" />
         </TouchableOpacity>
       </View>
