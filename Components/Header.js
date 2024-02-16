@@ -51,23 +51,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingHorizontal: 9,
+    paddingVertical: 30,
     backgroundColor: '#075e54',
+    position:'relative'
   },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 5,
+    padding: 6,
+    marginTop:20,
   },
   profileContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   profilePicture: {
     width: 40,
     height: 40,
     borderRadius: 20,
+    marginTop:30,
   },
   profilePictureInButton: {
     width: 39,
@@ -80,20 +82,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
-    marginLeft:-30,
+    marginLeft:-60,
+    marginTop:20,
   },
   titlee: {
     fontSize: 13,
     fontWeight: 'bold',
     color: '#fff',
-    marginLeft:-30,
+    marginLeft:-60,
   },
-  // moreButton: {
-  //   padding: 5,
-  // },
-  // moreButton: {
-  //   padding: 5,
-  // },
+  moreButton: {
+    padding: 5,
+    marginTop:20,
+  },
   // modalContainer: {
   //   flex: 1,
   //   justifyContent: 'center',

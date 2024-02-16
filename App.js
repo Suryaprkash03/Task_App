@@ -8,17 +8,15 @@ import profilePicture from './assets/image/profile.png';
 
 
 const ChatScreen = () => {
-  const [messages] = useState([
-    { id: 12, text: 'Hi' },
-    { id: 34, text: 'Hello' }]);
+  const [messages,setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
-  // const handleSend = () => {
-  //   if (newMessage.trim() === '') return;
-  //   const updatedMessages = [...messages, { id: messages.length, text: newMessage }];
-  //   setMessages(updatedMessages,);
-  //   setNewMessage('');
-  // };
+  const handleSend = () => {
+    if (newMessage.trim() === '') return;
+    const updatedMessages = [...messages, { id: messages.length, text: newMessage }];
+    setMessages(updatedMessages,);
+    setNewMessage('');
+  };
   return (<>
 
     <View style={styles.container}>
@@ -36,12 +34,20 @@ const ChatScreen = () => {
         title="ZenQuix Mob app Team"
         titlee="Archana mam , Shihab , Mohan" />
       {/* <ProfilePicture profilePicture={profilePicture}/> */}
+      <View style={styles.messageContainer}>
+            <Text style={styles.messageHead}>Archana mam</Text>
+            <Text style={styles.messageText}>hello</Text>
+          </View>
+          <View style={styles.messageContainer}>
+            <Text style={styles.messageHead}>Archana mam</Text>
+            <Text style={styles.messageText}>hello</Text>
+          </View>
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.messageContainer}>
-            <Text style={styles.messageHead}>Archana mam</Text>
+            <Text style={styles.messageHead}>You</Text>
             <Text style={styles.messageText}>{item.text}</Text>
           </View>
         )}
@@ -54,10 +60,7 @@ const ChatScreen = () => {
           onChangeText={setNewMessage}
 
         />
-        <TouchableOpacity>
-          <Ionicons name='' />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.sendButton} onPress={handle}>
+        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Ionicons name="send" size={24} color="white" />
         </TouchableOpacity>
       </View>
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginTop: 15,
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     maxWidth: '80%',
 
 
@@ -119,7 +122,5 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 1
   },
-
 });
-
 export default ChatScreen;
