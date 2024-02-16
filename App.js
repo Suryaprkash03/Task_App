@@ -9,9 +9,9 @@ import profilePicture from './assets/image/profile.png';
 
 const ChatScreen = () => {
   const [messages, setMessages] = useState([
-    {id:12,text:'Hi'},
-    {id:34,text:'Hello'}]);
-    const [newMessage, setNewMessage] = useState('');
+    { id: 12, text: 'Hi' },
+    { id: 34, text: 'Hello' }]);
+  const [newMessage, setNewMessage] = useState('');
 
   const handleSend = () => {
     if (newMessage.trim() === '') return;
@@ -39,23 +39,12 @@ const ChatScreen = () => {
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id.toString()}
-         renderItem={({ item }) => (
+        renderItem={({ item }) => (
           <View style={styles.messageContainer}>
-            <Text>Archana mam</Text>
-            <Text style={styles.messageText}>{item.text}</Text>
-          </View>
-         )}
-      />
-        <FlatList
-        data={messagess}
-        keyExtractor={(item) => item.id.toString()}
-        renderItemm={({ item}) => (
-          <View style={styles.messageContainer}>
-            <Text>HELLoo</Text>
+            <Text style={styles.messageHead}>Archana mam</Text>
             <Text style={styles.messageText}>{item.text}</Text>
           </View>
         )}
-
       />
       <View style={styles.inputContainer}>
         <TextInput
@@ -77,6 +66,7 @@ const ChatScreen = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -93,9 +83,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
     alignSelf: 'flex-end',
     maxWidth: '80%',
-    color: 'yellow'
 
 
+  },
+  messageHead:
+  {
+    color: 'red',
+    fontWeight: 'bold',
   },
   messageContainerr:
   {
@@ -104,6 +98,7 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 15,
+
   },
   inputContainer: {
     flexDirection: 'row',
